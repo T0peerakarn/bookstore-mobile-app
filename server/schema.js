@@ -23,6 +23,7 @@ type Book {
 
 type Query {
   bookCount: Int!
+  getBookByISBN(isbn: String!): Book
 }
 
 `;
