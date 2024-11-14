@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "client": "npm run ios --prefix client",
+    "server": "npm run start --prefix server",
+    "dev": "concurrently 'npm run client' 'npm run server'"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
