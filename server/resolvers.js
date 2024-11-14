@@ -20,7 +20,8 @@ export const resolvers = {
     getAuthentication: (_, { username, hashedPassword }) => {
       const user = users.find(
         (user) =>
-          user.username === username && user.hashedPassword === hashedPassword
+          user.username.toLowerCase() === username.toLowerCase() &&
+          user.hashedPassword === hashedPassword
       );
 
       return user ? user.id : null;
@@ -28,7 +29,11 @@ export const resolvers = {
   },
   Mutation: {
     createUser: (_, args) => {
-      if (users.find((user) => user.username === args.username)) {
+      if (
+        users.find(
+          (user) => user.username.toLowerCase() === args.username.toLowerCase()
+        )
+      ) {
         throw new GraphQLError("Username must be unique", {
           extensions: {
             code: "BAD_USER_INPUT",
