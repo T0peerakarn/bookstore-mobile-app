@@ -1,17 +1,4 @@
-export interface IBook {
-  isbn: string;
-  title: string;
-  authorId: number[];
-  yearOfPublication: number;
-  publisherId: number[];
-  imageS: string;
-  imageM: string;
-  imageL: string;
-  price: number;
-  amount: number;
-}
-
-export const books: IBook[] = [
+export let books = [
   {
     isbn: "0061001880",
     title: "Far Cry",

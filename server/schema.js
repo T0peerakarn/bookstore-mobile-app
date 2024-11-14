@@ -1,3 +1,5 @@
+export const typeDefs = `
+
 type Author {
   id: ID!
   name: String!
@@ -13,8 +15,14 @@ type Publisher {
 type Book {
   isbn: ID!
   title: String!
-  authors: [Person!]!
-  publishers: [Person!]!
+  authors: [Author!]!
+  publishers: [Publisher!]!
   price: Float!
   amount: Int!
 }
+
+type Query {
+  bookCount: Int!
+}
+
+`;
