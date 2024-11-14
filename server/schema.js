@@ -21,9 +21,30 @@ type Book {
   amount: Int!
 }
 
+type User {
+  id: ID!
+  username: String!
+  hashedPassword: String!
+  display: String!
+}
+
 type Query {
   bookCount: Int!
-  getBookByISBN(isbn: String!): Book
+  getBookByISBN(
+    isbn: String!
+  ): Book
+  getAuthentication(
+    username: String!
+    hashedPassword: String!
+  ): ID
+}
+
+type Mutation {
+  createUser(
+    username: ID!
+    hashedPassword: String!
+    display: String!
+  ): User
 }
 
 `;
