@@ -6,12 +6,16 @@ import {
   mockedAuthors,
   mockedPublishers,
   mockedUsers,
+  mockedRecords,
 } from "./data.js";
+
+import { formatDate } from "./utils/date.js";
 
 let books = [...mockedBooks];
 let authors = [...mockedAuthors];
 let publishers = [...mockedPublishers];
 let users = [...mockedUsers];
+let records = [...mockedRecords];
 
 export const resolvers = {
   Query: {
@@ -26,6 +30,49 @@ export const resolvers = {
       );
 
       return user ? user.id : null;
+    },
+    getRecords: (_root, _args, { userId }) => {
+      if (!userId) {
+        throw new GraphQLError("Please sign in before accessing your records", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      return records.filter((record) => record.userId === userId);
+    },
+    getRecordByRecordId: (_, { recordId }, { userId }) => {
+      if (!userId) {
+        throw new GraphQLError("Please sign in before accessing your records", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      const record = records.find((record) => record.id === recordId);
+
+      if (!record) {
+        throw new GraphQLError("Record not found", {
+          extensions: {
+            code: 404,
+          },
+        });
+      }
+
+      if (record.userId != userId) {
+        throw new GraphQLError(
+          "You don't have permission to access this record",
+          {
+            extensions: {
+              code: 403,
+            },
+          }
+        );
+      }
+
+      return record;
     },
   },
   Mutation: {
@@ -69,16 +116,26 @@ export const resolvers = {
         });
       }
 
+      const totalPrice = checkedOutBooks.reduce((acc, cur) => {
+        const book = books.find((b) => b.isbn === cur.isbn);
+        books = books.map((b) =>
+          b.isbn === cur.isbn ? { ...b, amount: b.amount - cur.amount } : b
+        );
+        return acc + book.price * cur.amount;
+      }, 0);
+
+      records = records.concat({
+        id: uuidv4(),
+        userId,
+        books: checkedOutBooks,
+        totalPrice,
+        createdAt: new Date(),
+      });
+
       return {
         success: true,
         message: "Checkout successful",
-        totalPrice: checkedOutBooks.reduce((acc, cur) => {
-          const book = books.find((b) => b.isbn === cur.isbn);
-          books = books.map((b) =>
-            b.isbn === cur.isbn ? { ...b, amount: b.amount - cur.amount } : b
-          );
-          return acc + book.price * cur.amount;
-        }, 0),
+        totalPrice: totalPrice,
       };
     },
   },
@@ -95,5 +152,13 @@ export const resolvers = {
   Publisher: {
     books: (parent) =>
       books.filter((book) => book.authorId.includes(parent.id)),
+  },
+  Record: {
+    books: (parent) =>
+      parent.books.map((book) => ({
+        ...books.find((b) => b.isbn === book.isbn),
+        amount: book.amount,
+      })),
+    createdAt: (parent) => formatDate(parent.createdAt),
   },
 };

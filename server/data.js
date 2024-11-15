@@ -851,3 +851,5 @@ export const mockedPublishers = [
 ];
 
 export const mockedUsers = [];
+
+export const mockedRecords = [];

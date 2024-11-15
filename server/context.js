@@ -5,7 +5,7 @@ export const context = ({ req }) => {
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_KEY);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       return { userId: decoded.userId };
     } catch (err) {
       console.error("Error verifying token:", err);

@@ -39,6 +39,14 @@ type CheckoutBooksResponse {
   totalPrice: Float
 }
 
+type Record {
+  id: ID!
+  userId: String!
+  books: [Book!]!
+  totalPrice: Float!
+  createdAt: String!
+}
+
 type Query {
   bookCount: Int!
   getAllBooks: [Book!]!
@@ -49,6 +57,10 @@ type Query {
     username: String!
     hashedPassword: String!
   ): ID
+  getRecords: [Record!]!
+  getRecordByRecordId(
+    recordId: ID!
+  ): Record
 }
 
 type Mutation {
