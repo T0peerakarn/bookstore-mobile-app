@@ -1,4 +1,4 @@
-export let books = [
+export const mockedBooks = [
   {
     isbn: "0061001880",
     title: "Far Cry",
@@ -604,7 +604,7 @@ export let books = [
   },
 ];
 
-export let authors = [
+export const mockedAuthors = [
   {
     id: 1,
     name: "Michael Stewart",
@@ -763,7 +763,7 @@ export let authors = [
   },
 ];
 
-export let publishers = [
+export const mockedPublishers = [
   {
     id: 1,
     name: "Harper Mass Market Paperbacks (Mm)",
@@ -849,3 +849,7 @@ export let publishers = [
     name: "Intercontinental Publishing",
   },
 ];
+
+export const mockedUsers = [];
+
+export const mockedRecords = [];
