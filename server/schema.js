@@ -28,8 +28,20 @@ type User {
   display: String!
 }
 
+input CheckoutBooksInput {
+  isbn: ID!
+  amount: Int!
+}
+
+type CheckoutBooksResponse {
+  success: Boolean!
+  message: String!
+  totalPrice: Float
+}
+
 type Query {
   bookCount: Int!
+  getAllBooks: [Book!]!
   getBookByISBN(
     isbn: String!
   ): Book
@@ -45,6 +57,9 @@ type Mutation {
     hashedPassword: String!
     display: String!
   ): User
+  checkoutBooks(
+    checkedOutBooks: [CheckoutBooksInput!]!
+  ): CheckoutBooksResponse!
 }
 
 `;
