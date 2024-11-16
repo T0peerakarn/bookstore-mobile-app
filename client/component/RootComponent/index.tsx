@@ -1,7 +1,7 @@
-import LandingPage from "../Landing";
+import Welcome from "../Welcome";
 
 const RootComponent = () => {
-  return <LandingPage />;
+  return <Welcome />;
 };
 
 export default RootComponent;

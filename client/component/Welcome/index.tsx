@@ -4,7 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import CustomBottomSheet from "./CustomBottomSheet";
 
-const LandingPage = () => {
+const Welcome = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={[]}>
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   image: { flex: 1, justifyContent: "center" },
 });
 
-export default LandingPage;
+export default Welcome;
