@@ -48,6 +48,10 @@ type Record {
 }
 
 type Query {
+  getToken(
+    username: String!
+    password: String!
+  ): String
   bookCount: Int!
   getAllBooks: [Book!]!
   getBookByISBN(
@@ -65,10 +69,6 @@ type Mutation {
     password: String!
     display: String!
   ): User
-  getAuthentication(
-    username: String!
-    password: String!
-  ): String
   checkoutBooks(
     checkedOutBooks: [CheckoutBooksInput!]!
   ): CheckoutBooksResponse!

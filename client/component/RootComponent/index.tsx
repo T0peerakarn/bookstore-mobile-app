@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, SafeAreaView, TextInput } from "react-native";
 import { Heading } from "react-native-sketchbook";
 
-import { useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import { SIGN_IN } from "../../queries/users";
 
 const RootComponent = () => {
-  const [username, setUsername] = useState("t0p.eerakarn");
-  const [password, setPassword] = useState("Top230746");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [signIn, { data, loading }] = useMutation(SIGN_IN);
+  const { refetch } = useQuery(SIGN_IN);
 
-  useEffect(() => {
-    if (!loading && data) {
+  const signIn = async () => {
+    try {
+      const { data } = await refetch({ username, password });
       console.log(data);
+    } catch {
+      console.error("Invalid username or password");
     }
-  }, [loading]);
+  };
 
   return (
     <SafeAreaView>
@@ -29,11 +32,7 @@ const RootComponent = () => {
         value={password}
         onChangeText={(newText) => setPassword(newText)}
       />
-      <Button title="log" onPress={() => console.log(username, password)} />
-      <Button
-        title="sign in"
-        onPress={() => signIn({ variables: { username, password } })}
-      />
+      <Button title="sign in" onPress={signIn} />
     </SafeAreaView>
   );
 };

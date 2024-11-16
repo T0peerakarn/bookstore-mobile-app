@@ -21,6 +21,30 @@ let records = [...mockedRecords];
 
 export const resolvers = {
   Query: {
+    getToken: async (_, { username, password }) => {
+      const user = users.find(
+        (user) => user.username.toLowerCase() === username.toLowerCase()
+      );
+
+      if (!user) {
+        throw new GraphQLError("Invalid username or password", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      const match = await bcrypt.compare(password, user.hashedPassword);
+      if (!match) {
+        throw new GraphQLError("Invalid username or password", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      return jwt.sign(user.id, process.env.JWT_SECRET);
+    },
     bookCount: () => books.length,
     getAllBooks: () => books,
     getBookByISBN: (_, { isbn }) => books.find((book) => book.isbn === isbn),
@@ -88,30 +112,6 @@ export const resolvers = {
       users = users.concat(newUser);
 
       return newUser;
-    },
-    getAuthentication: async (_, { username, password }) => {
-      const user = users.find(
-        (user) => user.username.toLowerCase() === username.toLowerCase()
-      );
-
-      if (!user) {
-        throw new GraphQLError("Invalid username or password", {
-          extensions: {
-            code: 401,
-          },
-        });
-      }
-
-      const match = await bcrypt.compare(password, user.hashedPassword);
-      if (!match) {
-        throw new GraphQLError("Invalid username or password", {
-          extensions: {
-            code: 401,
-          },
-        });
-      }
-
-      return jwt.sign(user.id, process.env.JWT_SECRET);
     },
     checkoutBooks: (_, { checkedOutBooks }, { userId }) => {
       if (!userId) {
