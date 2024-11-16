@@ -1,4 +1,4 @@
-import Welcome from "../Welcome";
+import Welcome from "../../pages/Welcome";
 
 const RootComponent = () => {
   return <Welcome />;

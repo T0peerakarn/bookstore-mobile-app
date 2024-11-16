@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Heading } from "react-native-sketchbook";
 
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import CustomButton from "../CustomButton";
+import CustomButton from "../../component/CustomButton";
 
 const CustomBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
