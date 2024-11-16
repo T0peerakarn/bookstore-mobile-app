@@ -1,5 +1,7 @@
 import { GraphQLError } from "graphql";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import {
   mockedBooks,
@@ -19,18 +21,35 @@ let records = [...mockedRecords];
 
 export const resolvers = {
   Query: {
+    getToken: async (_, { username, password }) => {
+      const user = users.find(
+        (user) => user.username.toLowerCase() === username.toLowerCase()
+      );
+
+      if (!user) {
+        throw new GraphQLError("Invalid username or password", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      const match = await bcrypt.compare(password, user.hashedPassword);
+      if (!match) {
+        throw new GraphQLError("Invalid username or password", {
+          extensions: {
+            code: 401,
+          },
+        });
+      }
+
+      console.log(user.id);
+
+      return jwt.sign(user.id, process.env.JWT_SECRET);
+    },
     bookCount: () => books.length,
     getAllBooks: () => books,
     getBookByISBN: (_, { isbn }) => books.find((book) => book.isbn === isbn),
-    getAuthentication: (_, { username, hashedPassword }) => {
-      const user = users.find(
-        (user) =>
-          user.username.toLowerCase() === username.toLowerCase() &&
-          user.hashedPassword === hashedPassword
-      );
-
-      return user ? user.id : null;
-    },
     getRecords: (_root, _args, { userId }) => {
       if (!userId) {
         throw new GraphQLError("Please sign in before accessing your records", {
@@ -76,10 +95,10 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createUser: (_, args) => {
+    createUser: (_, { username, password, display }) => {
       if (
         users.find(
-          (user) => user.username.toLowerCase() === args.username.toLowerCase()
+          (user) => user.username.toLowerCase() === username.toLowerCase()
         )
       ) {
         throw new GraphQLError("Username must be unique", {
@@ -89,10 +108,14 @@ export const resolvers = {
         });
       }
 
-      const newUser = { ...args, id: uuidv4() };
+      const hashedPassword = bcrypt.hashSync(password, 10);
+
+      const newUser = { username, hashedPassword, display, id: uuidv4() };
       users = users.concat(newUser);
 
-      return newUser;
+      console.log(newUser.id);
+
+      return jwt.sign(newUser.id, process.env.JWT_SECRET);
     },
     checkoutBooks: (_, { checkedOutBooks }, { userId }) => {
       if (!userId) {
