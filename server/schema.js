@@ -53,10 +53,6 @@ type Query {
   getBookByISBN(
     isbn: String!
   ): Book
-  getAuthentication(
-    username: String!
-    hashedPassword: String!
-  ): ID
   getRecords: [Record!]!
   getRecordByRecordId(
     recordId: ID!
@@ -66,9 +62,13 @@ type Query {
 type Mutation {
   createUser(
     username: ID!
-    hashedPassword: String!
+    password: String!
     display: String!
   ): User
+  getAuthentication(
+    username: String!
+    password: String!
+  ): String
   checkoutBooks(
     checkedOutBooks: [CheckoutBooksInput!]!
   ): CheckoutBooksResponse!
