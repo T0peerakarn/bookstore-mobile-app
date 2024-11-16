@@ -7,9 +7,7 @@ export const SIGN_IN = gql`
 `;
 
 export const SIGN_UP = gql`
-  mutation signUp($username: ID!, $password: String!, $display: String!) {
-    createUser(username: $username, password: $password, display: $display) {
-      id
-    }
+  mutation signUp($username: String!, $password: String!, $display: String!) {
+    createUser(username: $username, password: $password, display: $display)
   }
 `;

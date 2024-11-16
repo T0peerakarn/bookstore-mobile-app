@@ -1,38 +1,119 @@
 import { useState } from "react";
-import { Button, SafeAreaView, TextInput } from "react-native";
-import { Heading } from "react-native-sketchbook";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { SubHeading } from "react-native-sketchbook";
 
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
-import { SIGN_IN } from "../../queries/users";
+import { SIGN_UP, SIGN_IN } from "../../queries/users";
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 24,
+    gap: 12,
+  },
+  textInput: {
+    borderWidth: 1,
+    padding: 3,
+  },
+});
 
 const RootComponent = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [signUpUsername, setSignUpUsername] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
+  const [signUpDisplay, setSignUpDisplay] = useState("");
+  const [signInUsername, setSignInUsername] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
 
-  const { refetch } = useQuery(SIGN_IN);
+  const [signUp] = useMutation(SIGN_UP);
+  const { refetch: signIn } = useQuery(SIGN_IN);
 
-  const signIn = async () => {
+  const signUpHandler = async () => {
     try {
-      const { data } = await refetch({ username, password });
+      const { data } = await signUp({
+        variables: {
+          username: signUpUsername,
+          password: signUpPassword,
+          display: signUpDisplay,
+        },
+      });
       console.log(data);
-    } catch {
-      console.error("Invalid username or password");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const signInHandler = async () => {
+    try {
+      const { data } = await signIn({
+        username: signInUsername,
+        password: signInPassword,
+      });
+      console.log(data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <SafeAreaView>
-      <Heading>Hello World</Heading>
-      <TextInput
-        value={username}
-        onChangeText={(newText) => setUsername(newText)}
-      />
-      <TextInput
-        value={password}
-        onChangeText={(newText) => setPassword(newText)}
-      />
-      <Button title="sign in" onPress={signIn} />
+    <SafeAreaView style={styles.container}>
+      {/* Sign Up Component */}
+      <View>
+        <SubHeading>Sign Up</SubHeading>
+        <View>
+          <Text>username: </Text>
+          <TextInput
+            style={styles.textInput}
+            value={signUpUsername}
+            onChangeText={(newText) => setSignUpUsername(newText)}
+          />
+        </View>
+        <View>
+          <Text>password: </Text>
+          <TextInput
+            style={styles.textInput}
+            value={signUpPassword}
+            onChangeText={(newText) => setSignUpPassword(newText)}
+          />
+        </View>
+        <View>
+          <Text>display: </Text>
+          <TextInput
+            style={styles.textInput}
+            value={signUpDisplay}
+            onChangeText={(newText) => setSignUpDisplay(newText)}
+          />
+        </View>
+        <Button title="Sign Up" onPress={signUpHandler} />
+      </View>
+
+      {/* Sign In Component */}
+      <View>
+        <SubHeading>Sign In</SubHeading>
+        <View>
+          <Text>username: </Text>
+          <TextInput
+            style={styles.textInput}
+            value={signInUsername}
+            onChangeText={(newText) => setSignInUsername(newText)}
+          />
+        </View>
+        <View>
+          <Text>password: </Text>
+          <TextInput
+            style={styles.textInput}
+            value={signInPassword}
+            onChangeText={(newText) => setSignInPassword(newText)}
+          />
+        </View>
+        <Button title="Sign In" onPress={signInHandler} />
+      </View>
     </SafeAreaView>
   );
 };

@@ -43,6 +43,8 @@ export const resolvers = {
         });
       }
 
+      console.log(user.id);
+
       return jwt.sign(user.id, process.env.JWT_SECRET);
     },
     bookCount: () => books.length,
@@ -111,7 +113,9 @@ export const resolvers = {
       const newUser = { username, hashedPassword, display, id: uuidv4() };
       users = users.concat(newUser);
 
-      return newUser;
+      console.log(newUser.id);
+
+      return jwt.sign(newUser.id, process.env.JWT_SECRET);
     },
     checkoutBooks: (_, { checkedOutBooks }, { userId }) => {
       if (!userId) {
