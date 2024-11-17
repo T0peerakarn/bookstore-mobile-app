@@ -1,12 +1,18 @@
 import { useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Heading } from "react-native-sketchbook";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import CustomButton from "../../component/CustomButton";
 
+import { RootStackParamsList } from "../../component/RootComponent";
+
 const CustomBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList, "Welcome">>();
 
   return (
     <BottomSheet
@@ -29,7 +35,10 @@ const CustomBottomSheet = () => {
             Find your next great read anytime, anywhere.
           </Text>
         </View>
-        <CustomButton title="Get Started" onPress={() => console.log("Yay!")} />
+        <CustomButton
+          title="Get Started"
+          onPress={() => navigation.navigate("SignInSignUp")}
+        />
       </BottomSheetView>
     </BottomSheet>
   );
