@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Welcome from "../../pages/Welcome";
 import SignInSignUp from "../../pages/SignInSignUp";
+import Store from "../../pages/Store";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,11 @@ const RootComponent = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Store"
+          component={Store}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Welcome"
           component={Welcome}
