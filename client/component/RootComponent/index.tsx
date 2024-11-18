@@ -3,18 +3,25 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Welcome from "../../pages/Welcome";
 import SignInSignUp from "../../pages/SignInSignUp";
+import Main from "../../pages/Main";
 
 const Stack = createNativeStackNavigator();
 
 export type RootStackParamsList = {
   Welcome: undefined;
   SignInSignUp: undefined;
+  Main: undefined;
 };
 
 const RootComponent = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Welcome"
           component={Welcome}
