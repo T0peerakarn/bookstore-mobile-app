@@ -10,8 +10,12 @@ import Icon from "react-native-vector-icons/Feather";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-const NavigationBar = () => {
-  const [selected, setSelected] = useState<number>(0);
+interface INavigationBar {
+  index: number;
+  setIndex: (newIndex: number) => void;
+}
+
+const NavigationBar = ({ index, setIndex }: INavigationBar) => {
   const translateX = useState(new Animated.Value(0))[0];
 
   const NavItems = [
@@ -23,11 +27,11 @@ const NavigationBar = () => {
 
   useEffect(() => {
     Animated.timing(translateX, {
-      toValue: 85 * selected,
+      toValue: 85 * index,
       duration: 150,
       useNativeDriver: true,
     }).start();
-  }, [selected]);
+  }, [index]);
 
   return (
     <>
@@ -36,19 +40,19 @@ const NavigationBar = () => {
           <TouchableOpacity
             key={item.title}
             style={styles.iconContainer}
-            onPress={() => setSelected(i)}
+            onPress={() => setIndex(i)}
           >
             <Icon
               name={item.iconName}
               style={{
                 ...styles.iconImage,
-                color: selected === i ? "white" : "#575757",
+                color: index === i ? "white" : "#575757",
               }}
             />
             <Text
               style={{
                 ...styles.iconTitle,
-                color: selected === i ? "white" : "#575757",
+                color: index === i ? "white" : "#575757",
               }}
             >
               {item.title}

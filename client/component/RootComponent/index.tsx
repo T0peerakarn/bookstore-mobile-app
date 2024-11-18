@@ -3,13 +3,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Welcome from "../../pages/Welcome";
 import SignInSignUp from "../../pages/SignInSignUp";
-import Store from "../../pages/Store";
+import Main from "../../pages/Main";
 
 const Stack = createNativeStackNavigator();
 
 export type RootStackParamsList = {
   Welcome: undefined;
   SignInSignUp: undefined;
+  Main: undefined;
 };
 
 const RootComponent = () => {
@@ -17,8 +18,8 @@ const RootComponent = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Store"
-          component={Store}
+          name="Main"
+          component={Main}
           options={{ headerShown: false }}
         />
         <Stack.Screen
