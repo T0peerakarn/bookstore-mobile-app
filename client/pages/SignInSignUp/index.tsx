@@ -77,6 +77,7 @@ const SignInSignUp = () => {
             value={username}
             onChangeText={(newText) => setUsername(newText)}
             placeholder="Username"
+            autoCorrect={false}
           />
           <CustomTextInput
             value={password}
@@ -85,6 +86,7 @@ const SignInSignUp = () => {
             rightIconName={showPassword ? "eye" : "eye-off"}
             onPressRightIcon={() => setShowPassword(!showPassword)}
             secureTextEntry={!showPassword}
+            autoCorrect={false}
           />
           {form === "Sign Up" && (
             <>
@@ -97,11 +99,13 @@ const SignInSignUp = () => {
                   setShowConfirmPassword(!showConfirmPassword)
                 }
                 secureTextEntry={!showConfirmPassword}
+                autoCorrect={false}
               />
               <CustomTextInput
                 value={display}
                 onChangeText={(newText) => setDisplay(newText)}
                 placeholder="Display name"
+                autoCorrect={false}
               />
             </>
           )}

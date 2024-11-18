@@ -6,6 +6,7 @@ export interface IBook {
   isbn: string;
   title: string;
   author: string;
+  publisher: string;
   image: string;
   yearOfPublication: number;
 }
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 8,
     maxWidth: 125,
+    minWidth: 125,
   },
   image: {
     width: 125,

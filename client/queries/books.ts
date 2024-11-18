@@ -8,6 +8,9 @@ export const ALL_BOOKS = gql`
       authors {
         name
       }
+      publishers {
+        name
+      }
       yearOfPublication
       image
     }
