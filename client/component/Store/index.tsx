@@ -25,10 +25,6 @@ const Store = () => {
         yearOfPublication: number;
       }
 
-      interface IAuthorResponse {
-        name: string;
-      }
-
       const json = JSON.parse(JSON.stringify(data)).getAllBooks;
       setBooks(
         json.map((book: IBookResponse) => {
@@ -51,15 +47,27 @@ const Store = () => {
         leftIconName="search"
       />
       <HorizontalLine />
-      {books.length > 0 ? (
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
         <Bookshelf
           title="New in Book Vendor"
           books={books
             .sort((a, b) => b.yearOfPublication - a.yearOfPublication)
             .filter((_, i) => i < 5)}
         />
-      ) : (
+      )}
+      {loading ? (
         <ActivityIndicator />
+      ) : (
+        <Bookshelf
+          title="For You"
+          books={books
+            .sort((a, b) => b.yearOfPublication - a.yearOfPublication)
+            .filter((_, i) => i >= 5)
+            .sort((_a, _b) => 0.5 - Math.random())
+            .filter((_, i) => i < 5)}
+        />
       )}
     </>
   );

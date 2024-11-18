@@ -18,6 +18,7 @@ const Bookshelf = ({ title, books }: IBookshelf) => {
         contentContainerStyle={{
           columnGap: 16,
         }}
+        showsHorizontalScrollIndicator={false}
       >
         {books.map((book) => (
           <Book key={book.isbn} {...book} />
