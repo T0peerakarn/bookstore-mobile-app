@@ -17,6 +17,8 @@ type Book {
   title: String!
   authors: [Author!]!
   publishers: [Publisher!]!
+  yearOfPublication: Int!
+  image: String!
   price: Float!
   amount: Int!
 }

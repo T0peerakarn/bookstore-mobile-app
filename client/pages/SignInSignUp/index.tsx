@@ -2,23 +2,31 @@ import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Heading } from "react-native-sketchbook";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useMutation, useQuery } from "@apollo/client";
 
 import CustomTextInput from "../../component/CustomTextInput";
 import CustomButton from "../../component/CustomButton";
 
+import { RootStackParamsList } from "../../component/RootComponent";
+
 import { SIGN_IN, SIGN_UP } from "../../queries/users";
 
 const SignInSignUp = () => {
   const [form, setForm] = useState<"Sign In" | "Sign Up">("Sign In");
-  const [username, setUsername] = useState<String>("");
-  const [password, setPassword] = useState<String>("");
-  const [confirmPassword, setConfirmPassword] = useState<String>("");
-  const [display, setDisplay] = useState<String>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [display, setDisplay] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList, "Welcome">>();
 
   const [signUp] = useMutation(SIGN_UP);
   const { refetch: signIn } = useQuery(SIGN_IN);
@@ -36,7 +44,9 @@ const SignInSignUp = () => {
           display,
         },
       });
-      console.log(data);
+
+      await AsyncStorage.setItem("token", data.createUser);
+      navigation.navigate("Main");
     } catch (err) {
       console.error(err);
     }
@@ -48,7 +58,9 @@ const SignInSignUp = () => {
         username,
         password,
       });
-      console.log(data);
+
+      await AsyncStorage.setItem("token", data.getToken);
+      navigation.navigate("Main");
     } catch (err) {
       console.error(err);
     }
@@ -62,12 +74,12 @@ const SignInSignUp = () => {
         </Heading>
         <View style={styles.formContainer}>
           <CustomTextInput
-            value={username as string}
+            value={username}
             onChangeText={(newText) => setUsername(newText)}
             placeholder="Username"
           />
           <CustomTextInput
-            value={password as string}
+            value={password}
             onChangeText={(newText) => setPassword(newText)}
             placeholder="Password"
             rightIconName={showPassword ? "eye" : "eye-off"}
@@ -77,7 +89,7 @@ const SignInSignUp = () => {
           {form === "Sign Up" && (
             <>
               <CustomTextInput
-                value={confirmPassword as string}
+                value={confirmPassword}
                 onChangeText={(newText) => setConfirmPassword(newText)}
                 placeholder="Confirm password"
                 rightIconName={showConfirmPassword ? "eye" : "eye-off"}
@@ -87,7 +99,7 @@ const SignInSignUp = () => {
                 secureTextEntry={!showConfirmPassword}
               />
               <CustomTextInput
-                value={display as string}
+                value={display}
                 onChangeText={(newText) => setDisplay(newText)}
                 placeholder="Display name"
               />
