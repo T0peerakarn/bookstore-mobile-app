@@ -43,14 +43,14 @@ export const resolvers = {
         });
       }
 
-      console.log(user.id);
-
       return jwt.sign(user.id, process.env.JWT_SECRET);
     },
     bookCount: () => books.length,
     getAllBooks: () => books,
     getBookByISBN: (_, { isbn }) => books.find((book) => book.isbn === isbn),
-    getRecords: (_root, _args, { userId }) => {
+    getRecords: async (_root, _args, { userId }) => {
+      console.log(`userId: ${userId}`);
+
       if (!userId) {
         throw new GraphQLError("Please sign in before accessing your records", {
           extensions: {
@@ -59,13 +59,33 @@ export const resolvers = {
         });
       }
 
-      return records.filter((record) => record.userId === userId);
+      const user = await users.find((user) => user.id === userId);
+
+      if (!user) {
+        throw new GraphQLError("User not found", {
+          extensions: {
+            code: 404,
+          },
+        });
+      }
+
+      return await records.filter((record) => record.userId === userId);
     },
     getRecordByRecordId: (_, { recordId }, { userId }) => {
       if (!userId) {
         throw new GraphQLError("Please sign in before accessing your records", {
           extensions: {
             code: 401,
+          },
+        });
+      }
+
+      const user = users.find((user) => user.id === userId);
+
+      if (!user) {
+        throw new GraphQLError("User not found", {
+          extensions: {
+            code: 404,
           },
         });
       }
@@ -112,8 +132,6 @@ export const resolvers = {
 
       const newUser = { username, hashedPassword, display, id: uuidv4() };
       users = users.concat(newUser);
-
-      console.log(newUser.id);
 
       return jwt.sign(newUser.id, process.env.JWT_SECRET);
     },
