@@ -18,11 +18,6 @@ const RootComponent = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="Welcome"
           component={Welcome}
           options={{ headerShown: false }}
@@ -30,6 +25,11 @@ const RootComponent = () => {
         <Stack.Screen
           name="SignInSignUp"
           component={SignInSignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Main"
+          component={Main}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
