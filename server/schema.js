@@ -56,6 +56,7 @@ type Query {
   getRecordByRecordId(
     recordId: ID!
   ): Record!
+  getAllLikedBooks: [Book!]!
 }
 
 type Mutation {
@@ -67,6 +68,9 @@ type Mutation {
   checkoutBooks(
     checkedOutBooks: [CheckoutBooksInput!]!
   ): CheckoutBooksResponse!
+  toggleLike(
+    isbn: String!
+  ): Boolean!
 }
 
 `;

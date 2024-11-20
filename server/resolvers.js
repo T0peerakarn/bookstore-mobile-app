@@ -13,11 +13,31 @@ import {
 
 import { formatDate } from "./utils/date.js";
 
-let books = [...mockedBooks];
+let books = [...mockedBooks].map((book) => ({ ...book, likedBy: [] }));
 let authors = [...mockedAuthors];
 let publishers = [...mockedPublishers];
 let users = [...mockedUsers];
 let records = [...mockedRecords];
+
+const validateUserId = (userId, message) => {
+  if (!userId) {
+    throw new GraphQLError(message, {
+      extensions: {
+        code: 401,
+      },
+    });
+  }
+
+  const user = users.find((user) => user.id === userId);
+
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: 404,
+      },
+    });
+  }
+};
 
 export const resolvers = {
   Query: {
@@ -48,47 +68,13 @@ export const resolvers = {
     bookCount: () => books.length,
     getAllBooks: () => books,
     getBookByISBN: (_, { isbn }) => books.find((book) => book.isbn === isbn),
-    getRecords: async (_root, _args, { userId }) => {
-      console.log(`userId: ${userId}`);
+    getRecords: (_root, _args, { userId }) => {
+      validateUserId(userId, "Please sign in before accessing your records");
 
-      if (!userId) {
-        throw new GraphQLError("Please sign in before accessing your records", {
-          extensions: {
-            code: 401,
-          },
-        });
-      }
-
-      const user = await users.find((user) => user.id === userId);
-
-      if (!user) {
-        throw new GraphQLError("User not found", {
-          extensions: {
-            code: 404,
-          },
-        });
-      }
-
-      return await records.filter((record) => record.userId === userId);
+      return records.filter((record) => record.userId === userId);
     },
     getRecordByRecordId: (_, { recordId }, { userId }) => {
-      if (!userId) {
-        throw new GraphQLError("Please sign in before accessing your records", {
-          extensions: {
-            code: 401,
-          },
-        });
-      }
-
-      const user = users.find((user) => user.id === userId);
-
-      if (!user) {
-        throw new GraphQLError("User not found", {
-          extensions: {
-            code: 404,
-          },
-        });
-      }
+      validateUserId(userId, "Please sign in before accessing your records");
 
       const record = records.find((record) => record.id === recordId);
 
@@ -113,6 +99,11 @@ export const resolvers = {
 
       return record;
     },
+    getAllLikedBooks: (_root, _args, { userId }) => {
+      validateUserId(userId, "Please sign in before accessing your books");
+
+      return books.filter((book) => book.likedBy.includes(userId));
+    },
   },
   Mutation: {
     createUser: (_, { username, password, display }) => {
@@ -136,13 +127,7 @@ export const resolvers = {
       return jwt.sign(newUser.id, process.env.JWT_SECRET);
     },
     checkoutBooks: (_, { checkedOutBooks }, { userId }) => {
-      if (!userId) {
-        throw new GraphQLError("Please sign in before checking out the books", {
-          extensions: {
-            code: 401,
-          },
-        });
-      }
+      validateUserId(userId, "Please sign in before checking out the books");
 
       if (
         checkedOutBooks.some((book) => {
@@ -178,6 +163,40 @@ export const resolvers = {
         message: "Checkout successful",
         totalPrice: totalPrice,
       };
+    },
+    toggleLike: (_, { isbn }, { userId }) => {
+      validateUserId(userId, "Please sign in before like/unlike the book");
+
+      const book = books.find((book) => book.isbn === isbn);
+
+      let found = false,
+        result;
+
+      books = books.map((book) => {
+        if (book.isbn != isbn) {
+          return book;
+        }
+
+        found = true;
+        result = !book.likedBy.includes(userId);
+
+        return {
+          ...book,
+          likedBy: result
+            ? book.likedBy.concat(userId)
+            : book.likedBy.filter((id) => id != userId),
+        };
+      });
+
+      if (!found) {
+        throw new GraphQLError("Book not found", {
+          extensions: {
+            code: 404,
+          },
+        });
+      }
+
+      return result;
     },
   },
   Book: {
