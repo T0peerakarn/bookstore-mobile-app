@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Inter",
     fontSize: 22,
-    fontWeight: 600,
+    fontWeight: '600',
     lineHeight: 26.63,
     textAlign: "center",
     color: "white",

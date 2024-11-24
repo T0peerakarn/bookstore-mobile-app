@@ -11,13 +11,14 @@ import Liked from "../../component/Liked";
 import BookDetail from "../../component/BookDetail";
 import NavigationBar from "../../component/NavigationBar";
 
+
 const Main = () => {
   const [index, setIndex] = useState<number>(0);
-
+  const {addedBooks, setAddedBooks} = useState([])
   const render = () => {
     switch (index) {
       case 0:
-        return <Store />;
+        return <Store/>;
       case 1:
         return <Cart />;
       case 2:
