@@ -145,7 +145,7 @@ export const mockedBooks = [
   },
   {
     isbn: "0441011764",
-    title: "The Warlock's Last Ride (Warlock Series)",
+    title: "The Warlock's Last Ride\n(Warlock Series)",
     authorId: [10],
     yearOfPublication: 2004,
     publisherId: [6],

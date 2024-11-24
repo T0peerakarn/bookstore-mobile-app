@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
 
 import CustomTextInput from "../../component/CustomTextInput";
 import CustomButton from "../../component/CustomButton";
@@ -15,6 +14,8 @@ import CustomButton from "../../component/CustomButton";
 import { RootStackParamsList } from "../../component/RootComponent";
 
 import { SIGN_IN, SIGN_UP } from "../../queries/users";
+
+import SweetAlert, { showSweetAlert } from "../../component/SweetAlert";
 
 const SignInSignUp = () => {
   const [form, setForm] = useState<"Sign In" | "Sign Up">("Sign In");
@@ -49,18 +50,21 @@ const SignInSignUp = () => {
       await AsyncStorage.setItem("token", data.createUser);
 
       navigation.navigate("Main");
-    } catch (err) {
-
-      console.error(err);
+    } catch (err: any) {
+      showSweetAlert({
+        title: "Error!",
+        text: err.graphQLErrors[0].message,
+        showCancelButton: false,
+        cancelButtonText: "",
+        confirmButtonText: "Close",
+        onConfirm: () => null,
+        onClose: () => null,
+        type: "danger",
+      });
     }
   };
 
   const signInHandler = async () => {
-    const {data} = await signIn({
-      username,
-      password
-    });
-    console.log(data)
     try {
       const { data } = await signIn({
         username,
@@ -69,14 +73,23 @@ const SignInSignUp = () => {
 
       await AsyncStorage.setItem("token", data.getToken);
       navigation.navigate("Main");
-    } catch (err) {
-
-      console.error(err);
+    } catch (err: any) {
+      showSweetAlert({
+        title: "Error!",
+        text: err.graphQLErrors[0].message,
+        showCancelButton: false,
+        cancelButtonText: "",
+        confirmButtonText: "Close",
+        onConfirm: () => null,
+        onClose: () => null,
+        type: "danger",
+      });
     }
   };
 
   return (
     <SafeAreaProvider>
+      <SweetAlert />
       <SafeAreaView style={styles.container}>
         <Heading style={styles.heading}>
           {form === "Sign In" ? "Sign In" : "Sign Up"}
@@ -152,7 +165,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 25,
-    fontWeight: '400',
+    fontWeight: "400",
     lineHeight: 30.26,
     textAlign: "center",
     color: "#713030",
@@ -161,15 +174,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontFamily: "Inter",
     fontSize: 15,
-    fontWeight: '300',
+    fontWeight: "300",
     lineHeight: 18.15,
     textAlign: "center",
   },
-  x_text:{
-    color: '#713030',
+  x_text: {
+    color: "#713030",
     fontWeight: "600",
     textDecorationLine: "underline",
-  }
+  },
 });
 
 export default SignInSignUp;

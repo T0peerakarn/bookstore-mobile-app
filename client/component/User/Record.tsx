@@ -8,7 +8,7 @@ import { Image } from "react-native-elements";
 
 export interface IRecord {
   id: string;
-  books: (IBook & { authors: { name: string }[] })[];
+  books: IBook[];
   totalPrice: number;
   createdAt: string;
 }
@@ -33,7 +33,7 @@ const Record = ({ id, books, totalPrice, createdAt }: IRecord) => {
                   {book.title}
                 </Text>
                 <Text style={{ ...styles.text, fontSize: 13, fontWeight: 300 }}>
-                  {book.authors.map((author) => author.name).join(", ")}
+                  {book.authors!.map((author) => author.name).join(", ")}
                 </Text>
               </View>
               <View

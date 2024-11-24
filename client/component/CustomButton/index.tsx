@@ -13,12 +13,18 @@ export interface ICustomButton extends TouchableOpacityProps {
 const CustomButton = ({
   title,
   width = 250,
+  disabled,
   ...TouchableOpacityProps
 }: ICustomButton) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       {...TouchableOpacityProps}
-      style={{ ...styles.button, width }}
+      style={{
+        ...styles.button,
+        width,
+        backgroundColor: disabled ? "rgba(113, 48, 48, 0.3)" : "#713030",
+      }}
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Inter",
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 26.63,
     textAlign: "center",
     color: "white",

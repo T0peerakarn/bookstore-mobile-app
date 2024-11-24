@@ -21,6 +21,7 @@ type Book {
   image: String!
   price: Float!
   amount: Int!
+  liked: Boolean!
 }
 
 input CheckoutBooksInput {

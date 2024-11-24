@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated, StyleSheet, Text, TextInput, View } from "react-native";
+import { Animated, StyleSheet, TextInput, View } from "react-native";
 import { Heading } from "react-native-sketchbook";
 
 import CustomTextInput, { ICustomTextInput } from "../CustomTextInput";
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: "500",
     color: "#713030",
   },
   chipsContainer: {

@@ -8,11 +8,23 @@ import { useApolloClient } from "@apollo/client";
 import Record, { IRecord } from "./Record";
 
 import { ALL_RECORDS } from "../../queries/historys";
+import CustomButton from "../CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "../RootComponent";
 
 const User = () => {
   const [records, setRecords] = useState<IRecord[]>([]);
 
   const client = useApolloClient();
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList, "Welcome">>();
+
+  const signOutHandler = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.popTo("SignInSignUp");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,11 +50,14 @@ const User = () => {
         </Text>
       ) : (
         <View style={{ gap: 12 }}>
-          {records.map((record) => (
+          {[...records].reverse().map((record) => (
             <Record key={record.id} {...record} />
           ))}
         </View>
       )}
+      <View style={{ alignItems: "center" }}>
+        <CustomButton title="Sign Out" onPress={signOutHandler} />
+      </View>
     </>
   );
 };

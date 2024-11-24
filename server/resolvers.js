@@ -66,8 +66,13 @@ export const resolvers = {
       return jwt.sign(user.id, process.env.JWT_SECRET);
     },
     bookCount: () => books.length,
-    getAllBooks: () => books,
-    getBookByISBN: (_, { isbn }) => books.find((book) => book.isbn === isbn),
+    getAllBooks: () => books.map((book) => ({ ...book, liked: false })),
+    getBookByISBN: (_, { isbn }, { userId }) => {
+      validateUserId(userId, "Please sign in before accessing the data");
+
+      const book = books.find((book) => book.isbn === isbn);
+      return { ...book, liked: book.likedBy.includes(userId) };
+    },
     getRecords: (_root, _args, { userId }) => {
       validateUserId(userId, "Please sign in before accessing your records");
 

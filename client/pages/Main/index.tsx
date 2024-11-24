@@ -8,19 +8,22 @@ import Store from "../../component/Store";
 import Cart from "../../component/Cart";
 import User from "../../component/User";
 import Liked from "../../component/Liked";
-import BookDetail from "../../component/BookDetail";
 import NavigationBar from "../../component/NavigationBar";
-
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "../../component/RootComponent";
 
 const Main = () => {
   const [index, setIndex] = useState<number>(0);
-  const {addedBooks, setAddedBooks} = useState([])
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList, "Main">>();
+
   const render = () => {
     switch (index) {
       case 0:
-        return <Store/>;
+        return <Store />;
       case 1:
-        return <Cart />;
+        return <Cart setIndex={setIndex} />;
       case 2:
         return <User />;
       case 3:
@@ -31,10 +34,10 @@ const Main = () => {
   useEffect(() => {
     AsyncStorage.getItem("token").then((token) => {
       if (!token) {
-        // return to SignInSignUp
+        navigation.navigate("SignInSignUp");
       }
     });
-  }, []);
+  }, [AsyncStorage]);
 
   return (
     <>

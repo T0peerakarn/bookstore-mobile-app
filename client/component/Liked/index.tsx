@@ -47,20 +47,18 @@ const Liked = () => {
 
   return (
     <>
-      <View style={{ gap: 12 }}>
-        <Heading style={styles.heading}>Your Favorites</Heading>
-        {books.length == 0 ? (
-          <Text style={styles.notFoundText}>
-            You don't have any favorites yet.
-          </Text>
-        ) : (
-          <View style={styles.searchesContainer}>
-            {books.map((book) => (
-              <Book key={book.isbn} {...book} />
-            ))}
-          </View>
-        )}
-      </View>
+      <Heading style={styles.heading}>Your Favorites</Heading>
+      {books.length == 0 ? (
+        <Text style={styles.notFoundText}>
+          You don't have any favorites yet.
+        </Text>
+      ) : (
+        <View style={styles.searchesContainer}>
+          {books.map((book) => (
+            <Book key={book.isbn} {...book} />
+          ))}
+        </View>
+      )}
     </>
   );
 };
@@ -69,13 +67,13 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: "500",
     color: "#713030",
   },
   notFoundText: {
     fontFamily: "Inter",
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: "400",
     color: "#888888",
     textAlign: "center",
     marginVertical: 36,
