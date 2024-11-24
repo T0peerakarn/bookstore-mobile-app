@@ -1,5 +1,5 @@
     import { useLazyQuery } from '@apollo/client';
-    import  { IBook } from "../Bookshelf/Book";
+    import Book, { IBook } from "../Bookshelf/Book";
     import {Button, Image} from "react-native-elements";
     import { GET_BOOK_BY_ISBN } from '../../queries/books';
     import HorizontalLine from "../HorizontalLine";
@@ -11,10 +11,14 @@
     import {useNavigation} from "@react-navigation/native";
     import {NativeStackNavigationProp} from "@react-navigation/native-stack";
     import {RootStackParamsList} from "../RootComponent";
+    import {useSharedState} from "../../utility/sharedState";
+    // import Swal from 'sweetalert2';
 
     const BookDetail = ({route}: any) => {
         const param = route.params;
         const isbn = param.isbn
+        const {addedBooks, setAddedBooks} = useSharedState()
+
         const [fetchBook, {loading, error, data}] = useLazyQuery(GET_BOOK_BY_ISBN, {
             variables: {isbn},
         })
@@ -25,10 +29,10 @@
 
         const handleFetch = async () => {
             try {
-                // Fetch data asynchronously
-                const response = await fetchBook({variables: {isbn}});
+                await fetchBook({ variables: { isbn } }); // Use the latest isbn
+
             } catch (err) {
-                console.error(err); // Handle any errors
+                console.error("Error fetching book:", err); // Handle errors
             }
         };
 
@@ -40,7 +44,37 @@
             setModalVisible(false); // Hide the modal
         };
 
-        const [bookAmount, setBookAmount] = useState(1)
+        const [bookAmount, setBookAmount] = useState(1);
+        const handleAddedToCart = () => {
+
+            try {
+                const bookInCartIndex = addedBooks.findIndex((book) => book.isbn === isbn);
+
+                const shopAvailableAmount = data.getBookByISBN.amount;
+                if (bookInCartIndex !== -1){
+
+                    const currentBookAmount = addedBooks[bookInCartIndex].bookAmount;
+                    if (currentBookAmount + bookAmount > shopAvailableAmount) {
+                        console.log("Exceeds available stock");
+                        console.log(addedBooks)
+                    } else {
+
+                        const updatedBooks = [...addedBooks];
+                        updatedBooks[bookInCartIndex].bookAmount += bookAmount;
+
+                        setAddedBooks(updatedBooks); // Update the state
+                        // Swal.fire("Updated cart")
+                        console.log("Updated cart:", updatedBooks);
+                    }
+                }
+                else {
+                    // Swal.fire("Added books to cart")
+                    setAddedBooks((prevBooks) => [...prevBooks, {isbn, bookAmount}]);
+                }
+            } catch (error) {
+                console.error("Error adding book to cart:", error);
+            }
+        };
 
         React.useEffect(() => {
             handleFetch(); // This will fetch data when the component mounts
@@ -55,7 +89,7 @@
                 }
             }
             const decreaseBook = () => {
-                if (bookAmount > 0){
+                if (bookAmount > 1){
                     setBookAmount(bookAmount-1)
                 }
             }
@@ -149,7 +183,7 @@
                                         </View>
 
                                     </View>
-                                    <TouchableOpacity style={styles.button} onPress={console.log('hi')}>
+                                    <TouchableOpacity style={styles.button} onPress={handleAddedToCart}>
                                         <Text style={styles.button_text}> Add to Cart</Text>
                                     </TouchableOpacity>
 
@@ -185,7 +219,7 @@
             },
             title: {
                 fontSize: 15,
-                fontWeight: 600,
+                fontWeight: '600',
                 color: '#9A9A9A',
                 marginBottom: 30,
             },
@@ -306,7 +340,7 @@
             },
             wrappedText: {
                 fontSize: 24,
-                fontWeight: 500,
+                fontWeight: '500',
                 lineHeight: 29.05,
                 marginBottom: 10,
                 fontFamily: "Inter",
