@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "concurrently": "^9.1.0",
+    "react-native-push-notification": "^8.1.1",
     "sweetalert2": "^11.14.5"
   }
 }
