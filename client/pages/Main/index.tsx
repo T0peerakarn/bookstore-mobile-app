@@ -38,10 +38,7 @@ const Main = () => {
     <>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={["top"]}>
-          <ScrollView
-            contentContainerStyle={{ rowGap: 18, marginBottom: 150 }}
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView contentContainerStyle={{ rowGap: 18, marginBottom: 150 }}>
             {render()}
             <View style={styles.footer} />
           </ScrollView>

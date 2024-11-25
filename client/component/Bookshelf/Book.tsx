@@ -9,11 +9,9 @@ export interface IBook {
   publisher: string;
   image: string;
   yearOfPublication: number;
-  price: number;
-  amount: number;
 }
 
-const Book = ({ title, author, image }: IBook) => {
+const Book = ({ isbn, title, author, image }: IBook) => {
   return (
     <View style={styles.container}>
       <Image

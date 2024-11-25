@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
 
 import CustomTextInput from "../../component/CustomTextInput";
 import CustomButton from "../../component/CustomButton";
