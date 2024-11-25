@@ -1,10 +1,7 @@
-import {Heading} from "react-native-sketchbook";
-import {useSharedState} from "../../utility/sharedState";
+import { Heading } from "react-native-sketchbook";
 
 const Cart = () => {
-    const {addedBooks, setAddedBooks} = useSharedState();
-    console.log('you?',addedBooks)
-    return <Heading>Cart</Heading>;
+  return <Heading>Cart</Heading>;
 };
 
 export default Cart;

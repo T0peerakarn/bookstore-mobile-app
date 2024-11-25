@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: 500,
     color: "#713030",
   },
   chipsContainer: {

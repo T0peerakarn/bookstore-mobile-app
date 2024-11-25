@@ -47,20 +47,13 @@ const SignInSignUp = () => {
       });
 
       await AsyncStorage.setItem("token", data.createUser);
-
       navigation.navigate("Main");
     } catch (err) {
-
       console.error(err);
     }
   };
 
   const signInHandler = async () => {
-    const {data} = await signIn({
-      username,
-      password
-    });
-    console.log(data)
     try {
       const { data } = await signIn({
         username,
@@ -70,7 +63,6 @@ const SignInSignUp = () => {
       await AsyncStorage.setItem("token", data.getToken);
       navigation.navigate("Main");
     } catch (err) {
-
       console.error(err);
     }
   };
@@ -124,7 +116,11 @@ const SignInSignUp = () => {
             ? "Don't have an account? "
             : "Already have an account? "}
           <Text
-            style={styles.x_text}
+            style={{
+              color: "#713030",
+              fontWeight: 600,
+              textDecorationLine: "underline",
+            }}
             onPress={() => setForm(form === "Sign In" ? "Sign Up" : "Sign In")}
           >
             {form === "Sign In" ? "Sign Up" : "Sign In"}
@@ -152,7 +148,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 25,
-    fontWeight: '400',
+    fontWeight: 400,
     lineHeight: 30.26,
     textAlign: "center",
     color: "#713030",
@@ -161,15 +157,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontFamily: "Inter",
     fontSize: 15,
-    fontWeight: '300',
+    fontWeight: 300,
     lineHeight: 18.15,
     textAlign: "center",
   },
-  x_text:{
-    color: '#713030',
-    fontWeight: "600",
-    textDecorationLine: "underline",
-  }
 });
 
 export default SignInSignUp;

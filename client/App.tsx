@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { SharedStateProvider } from "./utility/sharedState";
+
 import RootComponent from "./component/RootComponent";
 
 const client = new ApolloClient({
@@ -12,9 +12,7 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <SharedStateProvider>
-        <RootComponent />
-      </SharedStateProvider>
+      <RootComponent />
     </ApolloProvider>
   );
 };
