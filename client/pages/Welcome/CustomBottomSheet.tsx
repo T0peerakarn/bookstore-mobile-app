@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 600,
     lineHeight: 26.63,
     textAlign: "center",
     color: "#713030",
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Inter",
     fontSize: 15,
-    fontWeight: '300',
+    fontWeight: 300,
     lineHeight: 18.15,
     textAlign: "center",
   },

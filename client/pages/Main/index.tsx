@@ -8,7 +8,6 @@ import Store from "../../component/Store";
 import Cart from "../../component/Cart";
 import User from "../../component/User";
 import Liked from "../../component/Liked";
-import BookDetail from "../../component/BookDetail";
 import NavigationBar from "../../component/NavigationBar";
 
 const Main = () => {
