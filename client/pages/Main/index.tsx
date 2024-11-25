@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,9 +38,8 @@ const Main = () => {
     <>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={["top"]}>
-          <ScrollView contentContainerStyle={{ rowGap: 18, marginBottom: 150 }}>
+          <ScrollView contentContainerStyle={{ rowGap: 18 }}>
             {render()}
-            <View style={styles.footer} />
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
@@ -56,10 +55,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 36,
-  },
-  footer: {
-    width: "100%",
-    height: 125,
   },
 });
 

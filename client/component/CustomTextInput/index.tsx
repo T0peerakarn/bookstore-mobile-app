@@ -1,4 +1,3 @@
-import React, { forwardRef } from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
@@ -9,43 +8,37 @@ export interface ICustomTextInput extends TextInputProps {
   onPressRightIcon?: () => void;
 }
 
-const CustomTextInput = forwardRef<TextInput, ICustomTextInput>(
-  (
-    {
-      leftIconName,
-      onPressLeftIcon,
-      rightIconName,
-      onPressRightIcon,
-      ...TextInputProps
-    },
-    ref
-  ) => {
-    return (
-      <View style={styles.container}>
-        {leftIconName && (
-          <Icon
-            name={leftIconName}
-            style={{ ...styles.icon, marginRight: 6 }}
-            onPress={onPressLeftIcon}
-          />
-        )}
-        <TextInput
-          ref={ref} // Pass the ref to the underlying TextInput
-          style={styles.textInput}
-          {...TextInputProps}
-          autoCapitalize="none"
+const CustomTextInput = ({
+  leftIconName,
+  onPressLeftIcon,
+  rightIconName,
+  onPressRightIcon,
+  ...TextInputProps
+}: ICustomTextInput) => {
+  return (
+    <View style={styles.container}>
+      {leftIconName && (
+        <Icon
+          name={leftIconName}
+          style={{ ...styles.icon, marginRight: 6 }}
+          onPress={onPressLeftIcon}
         />
-        {rightIconName && (
-          <Icon
-            name={rightIconName}
-            style={styles.icon}
-            onPress={onPressRightIcon}
-          />
-        )}
-      </View>
-    );
-  }
-);
+      )}
+      <TextInput
+        style={styles.textInput}
+        {...TextInputProps}
+        autoCapitalize="none"
+      />
+      {rightIconName && (
+        <Icon
+          name={rightIconName}
+          style={styles.icon}
+          onPress={onPressRightIcon}
+        />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
