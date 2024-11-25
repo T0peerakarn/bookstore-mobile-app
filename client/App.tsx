@@ -4,9 +4,7 @@ import RootComponent from "./component/RootComponent";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000",
-  cache: new InMemoryCache({
-    addTypename: false,
-  }),
+  cache: new InMemoryCache(),
 });
 
 const App = () => {

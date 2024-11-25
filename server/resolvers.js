@@ -167,7 +167,6 @@ export const resolvers = {
       authors.filter((author) => parent.authorId.includes(author.id)),
     publishers: (parent) =>
       publishers.filter((publisher) => parent.authorId.includes(publisher.id)),
-    image: (parent) => parent.imageL,
   },
   Author: {
     books: (parent) =>

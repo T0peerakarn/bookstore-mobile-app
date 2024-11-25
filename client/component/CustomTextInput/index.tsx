@@ -1,10 +1,10 @@
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
-export interface ICustomTextInput extends TextInputProps {
-  leftIconName?: string;
+interface ICustomTextInput extends TextInputProps {
+  leftIconName?: String;
   onPressLeftIcon?: () => void;
-  rightIconName?: string;
+  rightIconName?: String;
   onPressRightIcon?: () => void;
 }
 
@@ -19,8 +19,8 @@ const CustomTextInput = ({
     <View style={styles.container}>
       {leftIconName && (
         <Icon
-          name={leftIconName}
-          style={{ ...styles.icon, marginRight: 6 }}
+          name={leftIconName as string}
+          style={styles.icon}
           onPress={onPressLeftIcon}
         />
       )}
@@ -31,7 +31,7 @@ const CustomTextInput = ({
       />
       {rightIconName && (
         <Icon
-          name={rightIconName}
+          name={rightIconName as string}
           style={styles.icon}
           onPress={onPressRightIcon}
         />
