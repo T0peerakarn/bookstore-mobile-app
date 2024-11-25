@@ -1,15 +1,10 @@
 {
   "scripts": {
-    "install_client": "npm i --prefix client",
-    "install_server": "npm i --prefix server",
-    "install": "concurrently 'npm run install_client' 'npm run install_server'",
     "client": "npm run ios --prefix client",
     "server": "npm run start --prefix server",
     "dev": "concurrently 'npm run client' 'npm run server'"
   },
   "dependencies": {
-    "concurrently": "^9.1.0",
-    "react-native-push-notification": "^8.1.1",
-    "sweetalert2": "^11.14.5"
+    "concurrently": "^9.1.0"
   }
 }
