@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, TextInput, View } from "react-native";
-import { Heading } from "react-native-sketchbook";
+import { SubHeading } from "react-native-sketchbook";
 
 import CustomTextInput, { ICustomTextInput } from "../CustomTextInput";
 import CustomChip from "../CustomChip";
@@ -57,7 +57,7 @@ const CustomSearchBar = ({
       >
         {isSearching && (
           <View style={styles.container}>
-            <Heading style={styles.heading}>Search by</Heading>
+            <SubHeading style={styles.heading}>Search by</SubHeading>
             <View style={styles.chipsContainer}>
               {searchBy.map((item) => (
                 <CustomChip

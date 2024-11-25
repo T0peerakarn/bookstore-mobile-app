@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
-import { Heading } from "react-native-sketchbook";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 import { useQuery } from "@apollo/client";
 
 import CustomSearchBar from "../CustomSearchBar";
 import HorizontalLine from "../HorizontalLine";
 import Bookshelf from "../Bookshelf";
-import Book, { IBook } from "../Bookshelf/Book";
 
 import { ALL_BOOKS } from "../../queries/books";
+import Book, { IBook } from "../Bookshelf/Book";
+import { Text } from "react-native";
+import { SubHeading } from "react-native-sketchbook";
 
 export type SearchKeyType = "title" | "author" | "publisher" | "isbn";
 
@@ -93,7 +99,7 @@ const Store = () => {
       />
       {isSearching && search != "" && (
         <View style={{ gap: 12 }}>
-          <Heading style={styles.heading}>Results</Heading>
+          <SubHeading style={styles.heading}>Results</SubHeading>
           {searchedBooks.length == 0 ? (
             <Text style={styles.notFoundText}>
               Not found. Please try another search.

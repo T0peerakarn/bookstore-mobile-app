@@ -16,20 +16,3 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
-
-export const ALL_LIKED = gql`
-  query GetAllLikedBooks {
-    getAllLikedBooks {
-      isbn
-      title
-      authors {
-        name
-      }
-      publishers {
-        name
-      }
-      yearOfPublication
-      image
-    }
-  }
-`;
