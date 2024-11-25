@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 export const context = ({ req }) => {
   const token = req.headers.authorization || null;
+  console.log(token);
 
   if (token) {
     try {
