@@ -52,7 +52,7 @@ const Store = () => {
       ) : (
         <Bookshelf
           title="New in Book Vendor"
-          books={[...books]
+          books={books
             .sort((a, b) => b.yearOfPublication - a.yearOfPublication)
             .filter((_, i) => i < 5)}
         />
@@ -60,7 +60,14 @@ const Store = () => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <Bookshelf title="For You" books={books.filter((_, i) => i < 5)} />
+        <Bookshelf
+          title="For You"
+          books={books
+            .sort((a, b) => b.yearOfPublication - a.yearOfPublication)
+            .filter((_, i) => i >= 5)
+            .sort((_a, _b) => 0.5 - Math.random())
+            .filter((_, i) => i < 5)}
+        />
       )}
     </>
   );

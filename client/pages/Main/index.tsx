@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Store from "../../component/Store";
 import Cart from "../../component/Cart";
@@ -25,14 +23,6 @@ const Main = () => {
         return <Liked />;
     }
   };
-
-  useEffect(() => {
-    AsyncStorage.getItem("token").then((token) => {
-      if (!token) {
-        // return to SignInSignUp
-      }
-    });
-  }, []);
 
   return (
     <>
