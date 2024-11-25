@@ -1,25 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export interface ICustomButton extends TouchableOpacityProps {
+export interface ICustomButton {
   title: string;
+  onPress: () => void;
   width?: number;
 }
 
-const CustomButton = ({
-  title,
-  width = 250,
-  ...TouchableOpacityProps
-}: ICustomButton) => {
+const CustomButton = ({ title, onPress, width = 250 }: ICustomButton) => {
   return (
-    <TouchableOpacity
-      {...TouchableOpacityProps}
-      style={{ ...styles.button, width }}
-    >
+    <TouchableOpacity onPress={onPress} style={{ ...styles.button, width }}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
