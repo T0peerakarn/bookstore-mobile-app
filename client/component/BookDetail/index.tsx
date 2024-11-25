@@ -6,32 +6,23 @@
     import {ActivityIndicator, Modal, TouchableOpacity} from "react-native"; // Adjust the path as needed
     import { Ionicons } from '@expo/vector-icons';
 
-    import React, {useEffect, useState} from 'react';
+    import React, {useState} from 'react';
     import { StyleSheet, Text, View, ScrollView } from 'react-native';
     import {useNavigation} from "@react-navigation/native";
     import {NativeStackNavigationProp} from "@react-navigation/native-stack";
     import {RootStackParamsList} from "../RootComponent";
     import {useSharedState} from "../../utility/sharedState";
-    import Dialog from 'react-native-dialog';
-
+    // import Swal from 'sweetalert2';
 
     const BookDetail = ({route}: any) => {
         const param = route.params;
         const isbn = param.isbn
         const {addedBooks, setAddedBooks} = useSharedState()
-        const [notiVisible, setNotiVisible] = useState(false);
-        const [notiMessage, setNotiMessage] = useState('');
-        const [notiType, setNotiType] = useState<'success' | 'error'>('success');
-
-        const showDialog = () => setNotiVisible(true);
-        const hideDialog = () => setNotiVisible(false);
 
         const [fetchBook, {loading, error, data}] = useLazyQuery(GET_BOOK_BY_ISBN, {
             variables: {isbn},
         })
-
         const navigation = useNavigation<NativeStackNavigationProp<RootStackParamsList, "BookDetail">>();
-
         const handlePress = () =>{
             navigation.goBack();
         }
@@ -46,7 +37,6 @@
         };
 
         const [isModalVisible, setModalVisible] = useState(false); // Modal state
-
         const handleAddToCart = () => {
             setModalVisible(true); // Show the modal when button is pressed
         };
@@ -54,50 +44,32 @@
             setModalVisible(false); // Hide the modal
         };
 
-        useEffect(() => {
-            if (notiVisible) {
-                const timer = setTimeout(() => {
-                    setNotiVisible(false);
-                }, 2000); // Hide the notification after 3 seconds
-
-                // Cleanup the timer if the notification is manually closed
-                return () => clearTimeout(timer);
-            }
-        }, [notiVisible]);
-
         const [bookAmount, setBookAmount] = useState(1);
-
         const handleAddedToCart = () => {
 
             try {
-                const bookInCartIndex = addedBooks.findIndex((book) => book.selectBook.isbn === isbn);
-                const selectBook = data.getBookByISBN
+                const bookInCartIndex = addedBooks.findIndex((book) => book.isbn === isbn);
+
                 const shopAvailableAmount = data.getBookByISBN.amount;
                 if (bookInCartIndex !== -1){
 
                     const currentBookAmount = addedBooks[bookInCartIndex].bookAmount;
                     if (currentBookAmount + bookAmount > shopAvailableAmount) {
-                        setNotiMessage("Exceeds available stock");
-                        setNotiType('error');
-                        showDialog()
-
+                        console.log("Exceeds available stock");
                         console.log(addedBooks)
                     } else {
 
                         const updatedBooks = [...addedBooks];
                         updatedBooks[bookInCartIndex].bookAmount += bookAmount;
+
                         setAddedBooks(updatedBooks); // Update the state
-                        setNotiMessage("Book added to cart successfully!");
-                        setNotiType('success')
-                        showDialog()
+                        // Swal.fire("Updated cart")
                         console.log("Updated cart:", updatedBooks);
                     }
                 }
                 else {
-                    setNotiMessage("Book added to cart successfully!");
-                    setNotiType('success')
-                    showDialog()
-                    setAddedBooks((prevBooks) => [...prevBooks, {selectBook , bookAmount}]);
+                    // Swal.fire("Added books to cart")
+                    setAddedBooks((prevBooks) => [...prevBooks, {isbn, bookAmount}]);
                 }
             } catch (error) {
                 console.error("Error adding book to cart:", error);
@@ -218,23 +190,6 @@
                                 </View>
                             </View>
                         </Modal>
-                        <Modal
-                            visible={notiVisible}
-                            animationType="fade"
-                            transparent={true}
-                            onRequestClose={hideDialog}
-                        >
-                            <View style={styles.notiContainer}>
-                                <View style={[styles.notification, notiType === 'error' ? styles.error : styles.success]}>
-                                    <Text style={styles.notificationText}>{notiMessage}</Text>
-                                    <TouchableOpacity onPress={hideDialog}>
-                                        <Text style={styles.closeButtonText}>Close</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </Modal>
-
-
                     </ScrollView>
 
                 </View>
@@ -245,31 +200,6 @@
 
     const styles = StyleSheet.create(
         {
-            notiContainer: {
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-            },
-            notification: {
-                padding: 20,
-                borderRadius: 10,
-                alignItems: 'center',
-            },
-            success: {
-                backgroundColor: 'green',
-            },
-            error: {
-                backgroundColor: 'red',
-            },
-            notificationText: {
-                color: 'white',
-                fontSize: 16,
-            },
             container:{
                 padding: 20,
                 fontFamily: 'Inter',
@@ -416,8 +346,7 @@
                 fontFamily: "Inter",
                 flexWrap: 'wrap',
                 width: '100%'
-            }
-            ,
+            },
             modalContainer: {
                 flex: 1,
                 flexDirection: 'column',
