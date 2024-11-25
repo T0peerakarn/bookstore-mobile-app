@@ -73,7 +73,7 @@ const Record = ({ id, books, totalPrice, createdAt }: IRecord) => {
         Date of Purchase: {createdAt.split(",")[0]}
       </Text>
       <Text style={{ ...styles.text, fontSize: 13, textAlign: "right" }}>
-        Total: <Text style={styles.price}>${totalPrice}</Text>
+        Total: <Text style={styles.price}>${totalPrice.toFixed(2)}</Text>
       </Text>
     </View>
   );
