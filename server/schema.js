@@ -21,6 +21,13 @@ type Book {
   amount: Int!
 }
 
+type User {
+  id: ID!
+  username: String!
+  hashedPassword: String!
+  display: String!
+}
+
 input CheckoutBooksInput {
   isbn: ID!
   amount: Int!
@@ -29,7 +36,7 @@ input CheckoutBooksInput {
 type CheckoutBooksResponse {
   success: Boolean!
   message: String!
-  totalPrice: Float!
+  totalPrice: Float
 }
 
 type Record {
@@ -41,27 +48,27 @@ type Record {
 }
 
 type Query {
-  getToken(
-    username: String!
-    password: String!
-  ): String!
   bookCount: Int!
   getAllBooks: [Book!]!
   getBookByISBN(
     isbn: String!
-  ): Book!
+  ): Book
+  getAuthentication(
+    username: String!
+    hashedPassword: String!
+  ): ID
   getRecords: [Record!]!
   getRecordByRecordId(
     recordId: ID!
-  ): Record!
+  ): Record
 }
 
 type Mutation {
   createUser(
-    username: String!
-    password: String!
+    username: ID!
+    hashedPassword: String!
     display: String!
-  ): String!
+  ): User
   checkoutBooks(
     checkedOutBooks: [CheckoutBooksInput!]!
   ): CheckoutBooksResponse!
